@@ -39,29 +39,35 @@ const colors = {
 
 // element의 base 디자인
 const common = {
-  flexCenter: `
-    display: flex;
-    justify-contents: center;
-    align-items: center;
-  `,
+  defaultInput: `
+	margin-top: 5px;
+	display: block;
+	width: 100%;
+	height: 40px;
+	border: 1px solid lightgray;
+	border-radius: 3px;
+	`,
+  defaultButton: `
+	border-radius: 4px;
+  font-weight: bold;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-top: 3px;
+  margin-bottom: 5px;
+  display: block;
+  width: 100%;
+  height: 40px;
+  background: #0b0b20;
+  color: white;
+  border: 1px solid lightgray;
+	`,
   flexCenterColumn: `
     display: flex;
     flex-direction: column;
     justify-contents: center;
     align-items: center;
 	`,
-  //기본 버튼 (파란색)
-  defaultButton: `
-		background:#6f6eff;
-		font-size:1rem;
-		color:white;
-		padding: 5px 20px 5px 20px;
-    border: none;
-		border-radius: 20px;
-		outline:0px;
-		cursor:pointer;
-    text-decoration: none;
-	`,
+
   //미선택 버튼 (회색)
   unclickedButtonStyle: `
 	background:#d8d8d8;
@@ -100,21 +106,6 @@ const common = {
 	height:10%;
 	color:#bcbcbc;
 	padding-top:30px;
-	`,
-  // 기본 Input 태그
-  defaultInput: `
-	border: none;
-	border-bottom: 1px solid #bcbcbc;
-	color:#bcbcbc;
-	outline: none;
-	&:focus{
-  ::placeholder,
-  ::-webkit-input-placeholder {
-    color: #6f6eff;
-  }
-    border-bottom: 2px solid #6f6eff;
-    color: #6f6eff;;
-	}
 	`,
   stateCardDiv: `
 	border-radius: 15px 15px 15px 15px;
