@@ -8,6 +8,9 @@ export default function Main() {
     <>
       <Container>
         <Wrapper>
+          <Nav>
+            <Login to="/login">login</Login>
+          </Nav>
           <SliderWrapper>{/* <Slide></Slide> */}</SliderWrapper>
           <SubTarotCard>
             <TodayTarot to="/chat"></TodayTarot>
@@ -31,10 +34,16 @@ const sideMenu = () => keyframes`
 	margin-left: 200px;
 }
 `;
+const Login = styled(Link)``;
+const Nav = styled.div`
+  text-align-last: end;
+  width: 100%;
+  font-size: 1.4rem;
+`;
 const SlideButton = styled.span`
   width: 40px;
   height: 80px;
-  margin-top: 40px;
+  margin-top: 80px;
   border-radius: 10px 0px 0px 10px;
   background: #9f9f9f8c;
 `;
