@@ -269,7 +269,7 @@ const TopWrapper = styled.div`
   display: flex;
   align-items: center;
   margin: 0 auto;
-  background: url(./banner2.jpg);
+  background: white;
   * {
     margin: 0% 2% 0% 2%;
   }
