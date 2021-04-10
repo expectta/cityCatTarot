@@ -1,4 +1,6 @@
 import Slide from "./Slide";
 import Delayed from "./Delayed";
+import InventoryListCard from "./InventoryListCard";
+import Modal from "./Modal";
 
-export { Slide, Delayed };
+export { Modal, Slide, Delayed, InventoryListCard };
