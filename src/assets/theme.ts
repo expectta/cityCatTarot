@@ -57,9 +57,9 @@ const common = {
   display: block;
   width: 100%;
   height: 40px;
-  background: #0b0b20;
+	background: #0b0b20;
+	border:none;
   color: white;
-  border: 1px solid lightgray;
 	`,
   flexCenterColumn: `
     display: flex;
