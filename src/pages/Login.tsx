@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-
-export default function Main() {
+import { Link, useHistory } from "react-router-dom";
+import { requestLogin } from "../axios/axiosRequest";
+interface props {
+  handleLogin: any;
+}
+export default function SignUp({ handleLogin }: props) {
+  const history = useHistory();
+  const PREVIOUS_PAGE = -1;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -11,12 +17,25 @@ export default function Main() {
   const handlePassword = (event) => {
     setPassword(event.target.value);
   };
+  const clickLogin = async () => {
+    if (email && password) {
+      const result = await requestLogin(email, password);
+      handleLogin();
+      if (result) {
+        history.goBack();
+      } else {
+        alert("회원정보를 확인 해 주세요");
+      }
+    } else {
+      alert("회원정보를 입력해주세요");
+    }
+  };
   return (
     <Wrapper>
       <Container>
         <LoginFormStyle>
           <Logo src="./botLogo.png"></Logo>
-          <Title>로그인</Title>
+          <Title>Sign In</Title>
           <div>
             <InputWrap>
               <InputStyle
@@ -27,6 +46,7 @@ export default function Main() {
                 onChange={handleEmail}
                 required
               />
+
               <InputStyle
                 type="password"
                 name="password"
@@ -39,7 +59,13 @@ export default function Main() {
             {errorMessage ? <ErrorMessage>{errorMessage}</ErrorMessage> : ""}
 
             <ButtonWrap>
-              <Button type="button">로그인</Button>
+              <Background>
+                <Left></Left>
+                <Right></Right>
+              </Background>
+              <Button type="button" onClick={clickLogin}>
+                로그인
+              </Button>
 
               {/* <KakaoLogin
                 token={process.env.REACT_APP_KAKAO_JSAVASCRIPT_KEY}
@@ -47,13 +73,47 @@ export default function Main() {
                 onFail={console.error}
                 onLogout={console.info}
               /> */}
+              <Background>
+                <Left></Left>
+                <Right></Right>
+              </Background>
+              <Button type="button" onClick={() => history.goBack()}>
+                취소
+              </Button>
             </ButtonWrap>
           </div>
+          <ToSiginUp to="/signUp">회원가입</ToSiginUp>
         </LoginFormStyle>
       </Container>
     </Wrapper>
   );
 }
+const Background = styled.div`
+  width: 100%;
+  height: 37px;
+  display: flex;
+  position: relative;
+  top: 41px;
+`;
+const Left = styled.span`
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px 0px 11px 4px #6727d7fc;
+  background: blue;
+`;
+const Right = styled.span`
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px 0px 11px 4px #e338c2c9;
+  background: violet;
+`;
+const ToSiginUp = styled(Link)`
+  display: block;
+  margin-top: 6%;
+  text-align: end;
+  font-size: 1.3rem;
+  color: white;
+`;
 const Logo = styled.img`
   margin-bottom: 20%;
   width: 100%;
@@ -74,9 +134,12 @@ const Title = styled.div`
   color: white;
   font-size: 2rem;
   text-align: center;
+  margin-bottom: 5%;
 `;
 const InputWrap = styled.div``;
 const InputStyle = styled.input`
+  position: relative;
+
   ${({ theme }) => theme.common.defaultInput}
 `;
 const LoginFormStyle = styled.div`
@@ -90,7 +153,11 @@ const ButtonWrap = styled.div`
 `;
 
 const Button = styled.button`
-  ${({ theme }) => theme.common.defaultButton}
+  background: black;
+  position: relative;
+  border: 1px solid #3fe327;
+
+  ${({ theme }) => theme.common.defaultButton};
 `;
 
 const ErrorMessage = styled.div`
