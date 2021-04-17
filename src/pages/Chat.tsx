@@ -6,7 +6,7 @@ import ScrollToBottom, { useScrollToBottom } from "react-scroll-to-bottom";
 import { useHistory, Link } from "react-router-dom";
 // import Delayed from "react-delay-render";
 import { Delayed } from "../components/Index";
-import { requestCardList } from "../axios/axiosRequest";
+import { requestCardList, requestPostCard } from "../axios/axiosRequest";
 import { randomNumber } from "../utils/randomNumber";
 import { currentTime } from "../utils/currentTime";
 import { splitScript } from "../utils/splitScript";
@@ -14,11 +14,22 @@ interface props {
   openModal: any;
   loginInfo: any;
   handleLogOut: any;
+  greetingList: any;
+  greeting: any;
+  closeModal: any;
 }
-export default function Chat({ openModal, loginInfo, handleLogOut }: props) {
+export default function Chat({
+  openModal,
+  loginInfo,
+  greetingList,
+  greeting,
+  closeModal,
+}: props) {
   const history = useHistory();
   const [mousePosition, setMousePosition] = useState({
-    x: 0,
+    startposition: 0,
+    xValue: 0,
+    isMove: false,
   });
   const scrollToBottom = useScrollToBottom();
   const [chatData, setChatData] = useState({
@@ -41,11 +52,7 @@ export default function Chat({ openModal, loginInfo, handleLogOut }: props) {
         avatar: "./botLogo.png",
         image: "./hello.jpg",
         cardId: 0,
-        content: [
-          "안녕~",
-          "나는 타로를 봐주는 냥냥이야.",
-          "오늘의 운세를 봐 줄까냥?",
-        ],
+        content: greetingList,
         time: `${new Date()
           .getHours()
           .toString()} 시 ${new Date().getMinutes().toString()}분`,
@@ -54,6 +61,11 @@ export default function Chat({ openModal, loginInfo, handleLogOut }: props) {
     ],
   });
   const [cardList, setCardList] = useState<any[]>([]);
+  const [cardTitle, setCardTitle] = useState({
+    message: "",
+    visible: false,
+    posted: false,
+  });
   const handleNextStep = () => {
     const time = currentTime();
     const choiceScript = [
@@ -90,12 +102,14 @@ export default function Chat({ openModal, loginInfo, handleLogOut }: props) {
   const handleCancle = () => {
     history.push("/");
   };
+
   const handleVisiableButton = () => {
     setChatData({
       ...chatData,
       isVisibleButton: true,
     });
   };
+  //cardList 요청
   const handleCardRequest = async () => {
     const result = await requestCardList();
     setCardList(cardList.concat(result));
@@ -106,23 +120,62 @@ export default function Chat({ openModal, loginInfo, handleLogOut }: props) {
     if (chatData.currentStep) console.log(result, "요청결과");
   };
   const handleMouseMove = (event) => {
-    if (event.type === "mousedown") {
-      console.log(event.clientX, "=X , ", event);
+    // console.log(event, "=X , ", event);
+    if (mousePosition.isMove) {
       setMousePosition({
-        x: event.clientX,
+        ...mousePosition,
+        xValue: mousePosition.startposition - event.clientX,
       });
-      console.log("마우스다운");
     }
   };
+  useEffect(() => {
+    console.log(mousePosition.xValue, "= 마우스 이동 계산값");
+  }, [mousePosition.xValue]);
+  const handleMouseDown = (event) => {
+    console.log(event.clientX, " = 마우스 다운위치");
+    setMousePosition({
+      ...mousePosition,
+      startposition: event.clientX,
+      isMove: true,
+    });
+  };
+  const handleMouseUp = (event) => {
+    console.log(event.clientX, " = 마우스 업 위치");
+    setMousePosition({
+      ...mousePosition,
+      startposition: 0,
+      isMove: false,
+    });
+  };
+
+  useEffect(() => {
+    console.log(cardTitle.message, "입력값이 변할떄");
+    console.log(cardTitle.message.length, "입력값이 변할때 길이");
+  }, [cardTitle]);
   //선택한 카드 보관함으로 저장
   const handlePostCard = () => {
     if (loginInfo.isLogin) {
-      return openModal("카드저장완료");
+      setCardTitle({ ...cardTitle, visible: true });
+      // openModal(
+      //   <CardPostWrapper>
+      //     <div>제목을 입력해주세요</div>
+      //     <input
+      //       required
+      //       onChange={(event) => {
+      //         console.log(event.target.value);
+      //         setCardTitle({ message: event.target.value });
+      //       }}
+      //     ></input>
+      //     <PostButton onClick={handleSvaeCard}>저장</PostButton>
+      //   </CardPostWrapper>
+      // );
+    } else {
+      openModal("로그인 후 저장 가능합니다.");
     }
-    return openModal("로그인 후 저장 가능합니다.");
   };
+  //user가 선택한 카드정보확인
   const handlePick = () => {
-    const randomNum = randomNumber();
+    const randomNum = randomNumber(greeting);
     const time = currentTime();
     const script = splitScript(cardList[randomNum].cardDetail) as string[];
     const pickedCard = {
@@ -150,9 +203,33 @@ export default function Chat({ openModal, loginInfo, handleLogOut }: props) {
         cardTitle: cardList[randomNum].cardTitle,
         cardDetail: cardList[randomNum].cardDetail,
       },
-
       script: [...chatData.script, pickedCard],
     });
+  };
+  //카드를 보관함에 저장
+  const handleSaveCard = () => {
+    console.log(cardTitle.message, " 카드 이름");
+    console.log(cardTitle.message.length, " 카드 이름 길이");
+    if (cardTitle.message.length === 0) {
+      alert("제목을 입력하세요");
+    }
+    if (cardTitle.message.length > 0) {
+      const result = requestPostCard(
+        loginInfo.userId,
+        chatData.currentCardInfo.cardId,
+        chatData.currentCardInfo.cardCategory,
+        chatData.currentCardInfo.cardImageUrl,
+        chatData.currentCardInfo.cardTitle,
+        chatData.currentCardInfo.cardDetail,
+        cardTitle.message
+      );
+      if (result) {
+        setCardTitle({ message: "", visible: false, posted: true });
+      }
+
+      alert("저장되었습니다");
+      closeModal();
+    }
   };
   useEffect(() => {
     console.log(chatData.currentStep, "현재 스탭");
@@ -168,29 +245,31 @@ export default function Chat({ openModal, loginInfo, handleLogOut }: props) {
       <TopWrapper>
         <GoBack onClick={() => history.replace("/")}>{"<"}</GoBack>
         <Mascot src="./botLogo.png"></Mascot>
-        <Title>캣 봇</Title>
+        <Title>시티 캣</Title>
       </TopWrapper>
       <Body cardList={chatData.currentStep !== 2}>
         <ChatList>
           {chatData.script !== []
             ? chatData.script.map((element: any, mainIndex: number) => {
                 return element.content.map((el: any, index: any) => {
-                  console.log(
-                    element.content.length,
-                    "엘리먼트 길이",
-                    index,
-                    " = index",
-                    chatData.script.length - 1,
-                    " = 대사전체 길이",
-                    chatData.script[chatData.currentStep].step,
-                    "= 현재스탭"
-                  );
+                  // console.log(
+                  //   element.content.length,
+                  //   "엘리먼트 길이",
+                  //   index,
+                  //   " = index",
+                  //   chatData.script.length - 1,
+                  //   " = 대사전체 길이",
+                  //   chatData.script[chatData.currentStep].step,
+                  //   "= 현재스탭"
+                  // );
+                  console.log(index, "현재 인덱스");
+                  console.log(Number(`${element.step}${index}`), "현재 스탭");
                   return (
                     <ListItem key={index}>
                       <Delayed
                         type={element.type}
                         avatar={index === 0 && element.avatar}
-                        botName={index === 0 && true}
+                        botName={index === 0 ? true : false}
                         timer={index * 1000}
                         image={
                           element.image && index === 0 ? element.image : null
@@ -237,15 +316,17 @@ export default function Chat({ openModal, loginInfo, handleLogOut }: props) {
           </ButtonWrapper>
         ) : null} */}
         {chatData.currentStep === 2 ? (
-          <CardContianer mouse={mousePosition.x}>
+          <CardContianer mouse={mousePosition.xValue}>
             {chatData.isExistCard.length > 1
               ? chatData.isExistCard.map((el: any, index: number) => {
                   return (
                     <CardWrapper
                       shift={index}
                       onClick={handlePick}
-                      onMouseDown={handleMouseMove}
+                      onMouseDown={handleMouseDown}
                       onMouseMove={handleMouseMove}
+                      onMouseUp={handleMouseUp}
+                      onMouseLeave={handleMouseUp}
                     >
                       <Card></Card>
                     </CardWrapper>
@@ -255,9 +336,73 @@ export default function Chat({ openModal, loginInfo, handleLogOut }: props) {
           </CardContianer>
         ) : null}
       </Footer>
+      {cardTitle.visible ? (
+        <Modal>
+          <ModalWrapper>
+            <div>제목을 입력해주세요</div>
+            <input
+              onChange={(event) => {
+                console.log(event.target.value, " 입력값");
+                setCardTitle({ ...cardTitle, message: event?.target.value });
+              }}
+            ></input>
+            <div>
+              <PostButton onClick={() => handleSaveCard()}>저장</PostButton>
+              <PostButton
+                onClick={() =>
+                  setCardTitle({ message: "", visible: false, posted: false })
+                }
+              >
+                취소
+              </PostButton>
+            </div>
+          </ModalWrapper>
+        </Modal>
+      ) : null}
     </Container>
   );
 }
+const ButtonWrapper = styled.div``;
+const ModalWrapper = styled.div`
+  width: 50%;
+  height: 60%;
+  text-align: center;
+  padding: 5%;
+  background: white;
+  margin: 0 auto;
+  border-radius: 10px;
+`;
+
+const CloseButton = styled.div`
+  text-align: end;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-bottom: 16%;
+`;
+const Modal = styled.div`
+  width: 500px;
+  height: 200px;
+  position: absolute;
+  top: 30%;
+`;
+const CardPostWrapper = styled.div``;
+const PostButton = styled.div`
+  background: #6f6eff;
+  width: 40%;
+  font-size: 1rem;
+  color: white;
+  padding: 5px 20px 5px 20px;
+  border: none;
+  margin: 0 auto;
+  margin-top: 5%;
+  border-radius: 20px;
+  display: inline-block;
+  outline: 0px;
+  cursor: pointer;
+  text-decoration: none;
+  margin-left: 1%;
+  margin-right: 1%;
+`;
 const CardContianer = styled.div<any>`
   display: flex;
   place-content: center;
@@ -268,7 +413,7 @@ const CardContianer = styled.div<any>`
   ${(props) =>
     props.mouse &&
     css`
-      transform: rotate(${-(props.mouse / 8)}deg);
+      transform: rotate(${-(props.mouse / 3)}deg);
     `}
   transition: all ease 1s;
 `;
@@ -302,7 +447,6 @@ const Container = styled.div`
   width: 100%;
   height: 95%;
   margin: 0 auto;
-  border: 1px solid white;
 `;
 const TopWrapper = styled.div`
   height: 10vh;
@@ -320,7 +464,6 @@ const Body = styled.div<any>`
   overflow: auto;
 	overflow-y: overlay;
 	margin: 0 auto;
-  background: black;
   // background: url("./chatBackground.jpeg") no-repeat;
 	background-size: 100% 100%;
 	${(props) =>
@@ -355,9 +498,8 @@ const ListItem = styled.li`
   font-size: 2rem;
 `;
 
-const BotImage = styled.img``;
 const ChatList = styled(ScrollToBottom)`
-  height: 100%;
+  height: 99%;
   padding: 3%;
   list-style-type: none;
 `;
