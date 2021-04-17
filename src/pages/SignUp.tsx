@@ -3,8 +3,16 @@ import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { strongPassword, isEmail } from "../utils/validation";
 import { requestSignUp } from "../axios/axiosRequest";
-
-export default function SignUp() {
+interface props {
+  setModalVisible: any;
+  setModalMessage: any;
+  modalMessage: any;
+}
+export default function SignUp({
+  setModalVisible,
+  setModalMessage,
+  modalMessage,
+}: props) {
   const history = useHistory();
   const PREVIOUS_PAGE = -1;
   // input 값 상태
@@ -16,9 +24,6 @@ export default function SignUp() {
   const [message, setMessage] = useState("");
   const [isValidPassword, setIsValidPassword] = useState(false);
   const [signUpModal, setSignUpModal] = useState(false);
-  // modal 상태
-  const [modalMessage, setModalMessage] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
   // 유효성 검사
   const [validation, setValidation] = useState({
     validEmail: false,
@@ -58,12 +63,12 @@ export default function SignUp() {
 
     if (lastPassword.length > 0) {
       if (value !== lastPassword) {
-        setMessage("비밀번호 불일치");
+        setModalMessage("비밀번호 불일치");
         setIsValidPassword(false);
       } else if (lastPassword === "") {
-        setMessage("");
+        setModalMessage("");
       } else if (value === lastPassword) {
-        setMessage("비밀번호 일치");
+        setModalMessage("비밀번호 일치");
         setIsValidPassword(true);
       }
     }
@@ -79,12 +84,12 @@ export default function SignUp() {
     const { value } = event.target;
     setLastPassword(value);
     if (value !== firstPassword) {
-      setMessage("비밀번호 불일치");
+      setModalMessage("비밀번호 불일치");
       setIsValidPassword(false);
     } else if (firstPassword === " ") {
-      setMessage("");
+      setModalMessage("");
     } else if (value === firstPassword) {
-      setMessage("비밀번호 일치");
+      setModalMessage("비밀번호 일치");
       setIsValidPassword(true);
     }
   };
@@ -110,27 +115,25 @@ export default function SignUp() {
   // 회원등록 요청
   const handleRequestSignUp = () => {
     console.log("회원 버튼 입력");
-    // const { validEmail, validPassword, validMobile } = validation;
+    const { validEmail, validPassword, validMobile } = validation;
     // if (!isUsableEmail) {
+    //   console.log("email");
     //   setModalMessage("email 중복을 확인 해주세요.");
     //   setModalVisible(true);
     //   return;
     // }
-    // if (!validEmail) {
-    //   setModalMessage("Email 형식을 확인 해주세요");
-    //   setModalVisible(true);
-    //   return;
-    // }
-    // if (!validPassword) {
-    //   setModalMessage("비밀번호 규칙을 확인 해 주세요");
-    //   setModalVisible(true);
-    //   return;
-    // }
-    // if (!validMobile) {
-    //   setModalMessage("핸드폰 번호 형식을 확인 해 주세요");
-    //   setModalVisible(true);
-    //   return;
-    // }
+    if (!validEmail) {
+      console.log("Email 형식을 확인 해주세요");
+      setModalMessage("Email 형식을 확인 해주세요");
+      setModalVisible(true);
+      return;
+    }
+    if (!validPassword) {
+      console.log("비밀번호 규칙을 확인 해 주세요요");
+      setModalMessage("비밀번호 규칙을 확인 해 주세요");
+      setModalVisible(true);
+      return;
+    }
     console.log(
       lastPassword,
       "비번",
@@ -139,20 +142,20 @@ export default function SignUp() {
       nickName,
       "닉네임"
     );
-    // if (lastPassword && isUsableEmail && nickName) {
-    try {
-      const result = requestSignUp(lastPassword, email, nickName);
-      if (result) {
-        history.push("/");
+    if (lastPassword && nickName) {
+      try {
+        const result = requestSignUp(lastPassword, email, nickName);
+        if (result) {
+          history.push("/");
+        }
+      } catch (err) {
+        setModalMessage("이미 동일한 email이 존재합니다");
+        setModalVisible(true);
       }
-    } catch (err) {
-      setModalMessage("이미 동일한 email이 존재합니다");
+    } else {
+      setModalMessage("모든 입력사항은 필수 입니다.");
       setModalVisible(true);
     }
-    // } else {
-    //   setModalMessage("모든 입력사항은 필수 입니다.");
-    //   setModalVisible(true);
-    // }
   };
   return (
     <Wrapper>
@@ -185,14 +188,14 @@ export default function SignUp() {
                 )}
               </TableData>
               <TableData></TableData>
-              <TableData className="overlapping-cbutton">
+              {/* <TableData className="overlapping-cbutton">
                 <Button
                   id="overlapping-button"
                   onClick={handleRequestCheckEmail}
                 >
                   중복확인{" "}
                 </Button>
-              </TableData>
+              </TableData> */}
             </TableRow>
             <TableRow>
               <TableData className="label">비밀번호</TableData>
@@ -264,18 +267,11 @@ export default function SignUp() {
           </ButtonWrap>
         </SignUpFormStyle>
       </Container>
-
-      {/* <NorificationModal
-			visible={modalVisible}
-			closeable
-			maskClosable
-			onClose={closeModal}
-		>
-			<h3>{modalMessage}</h3>
-		</NorificationModal> */}
+      <h3>{modalMessage}</h3>
     </Wrapper>
   );
 }
+const NorificationModal = styled.div<any>``;
 const ToSiginUp = styled(Link)`
   display: block;
   color: red;
@@ -292,7 +288,7 @@ const Container = styled.div`
 const Wrapper = styled.div`
   background: black;
   width: 100%;
-  height: 100vh;
+  height: 99vh;
   display: flex;
   text-align: center;
 `;
@@ -394,6 +390,7 @@ const UserInfoTable = styled.table`
     width: 100px;
   }
   input {
+    font-size: 1rem;
     padding-left: 10px;
   }
 `;
