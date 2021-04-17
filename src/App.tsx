@@ -3,7 +3,15 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import theme from "./assets/theme";
 import { createMemoryHistory } from "history";
-import { Main, Login, Inventory, UserInfo, Chat, SignUp } from "./pages/Index";
+import {
+  Main,
+  Login,
+  Inventory,
+  UserInfo,
+  Chat,
+  SignUp,
+  MyCard,
+} from "./pages/Index";
 import { Modal } from "./components/Index";
 export default function App() {
   const history = createMemoryHistory();
@@ -11,13 +19,33 @@ export default function App() {
     userId: 0,
     isLogin: false,
   });
+  const [myTarotResult, setMyTarotResult] = useState({
+    cardId: "",
+    title: "",
+    image: "",
+    cardDetail: "",
+    userInputSubject: "",
+  });
+
+  const [greeting, setGreeting] = useState({
+    checkedChat: 0,
+    greetingScript: [
+      ["안녕~", "나는 타로를 봐주는 냥냥이야.", "오늘의 운세를 봐 줄까냥?"],
+      [
+        "안냥? 썸 타는 사람 생겼냥? 부럽다냥.... ",
+        "혹시 썸 타는 사람도 없는데 이 타로 보는건 아니겠지?",
+        "진짜 썸타는 사람 생겼을 때만 보라냥! 그럼 상대방은 어떤 마음일지,",
+        "잘 될 수 있을지 한 번 타로카드를 뽑아보라냥!",
+      ],
+    ],
+  });
   // modal 상태
   const [modalMessage, setModalMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   // loading 상태
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // modal창 제거
-  const closeModal = (login: string) => {
+  const closeModal = (login?: string) => {
     if (login) {
       history.push("/login");
       setModalVisible(false);
@@ -29,21 +57,26 @@ export default function App() {
     setModalMessage(message);
     setModalVisible(true);
   };
+
   //로그아웃
   const handleLogOut = () => {
     setLoginInfo({
       userId: 0,
       isLogin: false,
     });
+
     alert("로그아웃 되었습니다");
   };
   //로그인
   const handleLogin = () => {
-    setLoginInfo({
-      userId: JSON.parse(localStorage.getItem("loginInfo")!).userId,
-      isLogin: true,
-    });
+    if (localStorage.getItem("loginInfo")) {
+      setLoginInfo({
+        userId: JSON.parse(localStorage.getItem("loginInfo")!).userId,
+        isLogin: true,
+      });
+    }
   };
+
   useEffect(() => {
     if (localStorage.getItem("loginInfo")) {
       setLoginInfo({
@@ -65,6 +98,8 @@ export default function App() {
                 loginInfo={loginInfo}
                 openModal={openModal}
                 handleLogOut={handleLogOut}
+                setGreeting={setGreeting}
+                greeting={greeting}
               />
             )}
           ></Route>
@@ -73,23 +108,44 @@ export default function App() {
             path="/login"
             render={() => <Login handleLogin={handleLogin}></Login>}
           />
-          <Route exact path="/signUp" render={() => <SignUp></SignUp>}></Route>
+          <Route
+            exact
+            path="/signUp"
+            render={() => (
+              <SignUp
+                setModalVisible={setModalVisible}
+                setModalMessage={setModalMessage}
+                modalMessage={modalMessage}
+              ></SignUp>
+            )}
+          ></Route>
           <Route
             exact
             path="/invetory"
-            render={() => <Inventory></Inventory>}
+            render={() => (
+              <Inventory
+                loginInfo={loginInfo}
+                setMyTarotResult={setMyTarotResult}
+              ></Inventory>
+            )}
           ></Route>
           <Route
             exact
             path="/userInfo"
-            render={() => <UserInfo></UserInfo>}
+            render={() => <UserInfo loginInfo={loginInfo}></UserInfo>}
           ></Route>
-          <Route exact path="/chat" component={Chat}>
+          <Route exact path="/tarotChat" component={Chat}>
             <Chat
+              greetingList={greeting.greetingScript[greeting.checkedChat]}
+              greeting={greeting.checkedChat}
               openModal={openModal}
               loginInfo={loginInfo}
               handleLogOut={handleLogOut}
+              closeModal={closeModal}
             ></Chat>
+          </Route>
+          <Route exact path="/myCard" component={MyCard}>
+            <MyCard myTarotResult={myTarotResult}></MyCard>
           </Route>
         </Switch>
       </ThemeProvider>
@@ -122,16 +178,23 @@ const GoLogin = styled(Link)`
   text-decoration: none;
 `;
 const GlobalStyle = createGlobalStyle`
+
 * {
 	box-sizing: border-box;
 	scroll-behavior: smooth;
+	a{ text-decoration: none;
+		
+	}
 }
 body{                        
-	width:700px;
+	width:500px;
 	height:100vh;
 	margin : 0 auto;
 	padding: 0;
 	background:black;
+	border: 1px solid #cf5fbf;
+  box-shadow: 0px 0px 11px 2px #6727d7fc
 
 }
+
 `;
