@@ -205,7 +205,7 @@ export function requestModifyUserInfo(newData, userId) {
       newData,
     })
     .then((res) => {
-      console.log(res, "보관함 카드 리스트");
+      console.log(res.data, "수정된 회원정보");
       if (res.status === 200) {
         return res.data;
       } else {
