@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import styled, { css } from "styled-components";
 interface Props {
   wait?: boolean;
@@ -30,22 +31,20 @@ const Delayed = ({
   handleVisiableButton,
 }: Props) => {
   const [show, setShow] = useState(false);
-  console.log("sadfasdfa");
 
+  const history = useHistory();
   useEffect(() => {
     setInterval(() => {
       setShow(true);
     }, timer);
     return () => {
       if (createdAt && type === "bot") {
-        console.log("마지막 컴포넌트");
         handleVisiableButton();
       }
     };
   }, [show]);
 
   if (!show) return null;
-  console.log(category, " = 카테고리");
   return (
     <>
       {type === "user" ? (
@@ -59,7 +58,8 @@ const Delayed = ({
         <>
           {botName && <BotName> 캣 봇</BotName>}
           <Container>
-            <Avatar src={avatar}></Avatar>
+            {avatar ? <Avatar src={avatar}></Avatar> : <SpaceBox></SpaceBox>}
+
             {image !== null ? (
               <ListContent>
                 <Image src={image} />
@@ -76,15 +76,22 @@ const Delayed = ({
             </ButtonWrapper>
           ) : null}
           {category === "보관함에 저장" ? (
-            <ButtonWrapper>
-              <Button onClick={() => handlePostCard()}>{category}</Button>
-            </ButtonWrapper>
+            <>
+              <ButtonWrapper>
+                <Button onClick={() => handlePostCard()}>{category}</Button>
+                <Button onClick={() => history.go(-1)}>홈으로</Button>
+              </ButtonWrapper>
+            </>
           ) : null}
         </>
       )}
     </>
   );
 };
+const SpaceBox = styled.div`
+  align-self: start;
+  width: 50px;
+`;
 const ButtonWrapper = styled.div`
   width: 95;
   display: flex;
@@ -144,7 +151,6 @@ const CreatedAt = styled.span<any>`
   font-size: 1rem;
   background: black;
   color: white;
-
   box-shadow: 0px 0px 11px 2px #6727d7fc;
 
   ${(props) =>
@@ -155,5 +161,6 @@ const CreatedAt = styled.span<any>`
       place-self: flex-end;
       margin: 0.5%;
       padding: 1%;
+      margin: 1.5%;
     `}
 `;
