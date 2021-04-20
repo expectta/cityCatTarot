@@ -10,13 +10,16 @@ import { requestCardList, requestPostCard } from "../axios/axiosRequest";
 import { randomNumber } from "../utils/randomNumber";
 import { currentTime } from "../utils/currentTime";
 import { splitScript } from "../utils/splitScript";
+import ScrollableFeed from "react-scrollable-feed";
+import { IloginInfo } from "../App";
+import { Igreeting } from "./Main";
 interface props {
-  openModal: any;
-  loginInfo: any;
-  handleLogOut: any;
+  openModal(message: string): void;
+  loginInfo: IloginInfo;
+  handleLogOut(): void;
   greetingList: any;
-  greeting: any;
-  closeModal: any;
+  greeting: Igreeting;
+  closeModal(): void;
 }
 export default function Chat({
   openModal,
@@ -31,7 +34,6 @@ export default function Chat({
     xValue: 0,
     isMove: false,
   });
-  const scrollToBottom = useScrollToBottom();
   const [chatData, setChatData] = useState({
     botName: "캣봇",
     currentStep: 0,
@@ -129,8 +131,11 @@ export default function Chat({
     }
   };
   useEffect(() => {
-    console.log(mousePosition.xValue, "= 마우스 이동 계산값");
-  }, [mousePosition.xValue]);
+    if (mousePosition.isMove) {
+      console.log(mousePosition.xValue / 2, "= 마우스 이동 계산값");
+    }
+  }, [mousePosition]);
+  //마우스 다운 핸들러
   const handleMouseDown = (event) => {
     console.log(event.clientX, " = 마우스 다운위치");
     setMousePosition({
@@ -156,26 +161,13 @@ export default function Chat({
   const handlePostCard = () => {
     if (loginInfo.isLogin) {
       setCardTitle({ ...cardTitle, visible: true });
-      // openModal(
-      //   <CardPostWrapper>
-      //     <div>제목을 입력해주세요</div>
-      //     <input
-      //       required
-      //       onChange={(event) => {
-      //         console.log(event.target.value);
-      //         setCardTitle({ message: event.target.value });
-      //       }}
-      //     ></input>
-      //     <PostButton onClick={handleSvaeCard}>저장</PostButton>
-      //   </CardPostWrapper>
-      // );
     } else {
       openModal("로그인 후 저장 가능합니다.");
     }
   };
   //user가 선택한 카드정보확인
   const handlePick = () => {
-    const randomNum = randomNumber(greeting);
+    const randomNum = randomNumber(greeting.checkedChat);
     const time = currentTime();
     const script = splitScript(cardList[randomNum].cardDetail) as string[];
     const pickedCard = {
@@ -240,6 +232,14 @@ export default function Chat({
       console.log("타이밍 보기");
     };
   }, [chatData.currentStep]);
+  const messagesEndRef = useRef<null | HTMLDivElement>(null);
+
+  const scrollToBottom = useScrollToBottom();
+  useEffect(() => {
+    return () => {
+      scrollToBottom();
+    };
+  });
   return (
     <Container>
       <TopWrapper>
@@ -247,74 +247,55 @@ export default function Chat({
         <Mascot src="./botLogo.png"></Mascot>
         <Title>시티 캣</Title>
       </TopWrapper>
-      <Body cardList={chatData.currentStep !== 2}>
-        <ChatList>
-          {chatData.script !== []
-            ? chatData.script.map((element: any, mainIndex: number) => {
-                return element.content.map((el: any, index: any) => {
-                  // console.log(
-                  //   element.content.length,
-                  //   "엘리먼트 길이",
-                  //   index,
-                  //   " = index",
-                  //   chatData.script.length - 1,
-                  //   " = 대사전체 길이",
-                  //   chatData.script[chatData.currentStep].step,
-                  //   "= 현재스탭"
-                  // );
-                  console.log(index, "현재 인덱스");
-                  console.log(Number(`${element.step}${index}`), "현재 스탭");
-                  return (
-                    <ListItem key={index}>
-                      <Delayed
-                        type={element.type}
-                        avatar={index === 0 && element.avatar}
-                        botName={index === 0 ? true : false}
-                        timer={index * 1000}
-                        image={
-                          element.image && index === 0 ? element.image : null
-                        }
-                        content={el}
-                        createdAt={
-                          index === element.content.length - 1 && element.time
-                        }
-                        setChatData={setChatData}
-                        handleVisiableButton={handleVisiableButton}
-                        category={
-                          chatData.script.length - 1 === mainIndex &&
-                          element.content.length - 1 === index
-                            ? chatData.script[chatData.currentStep]
-                                .firstCategory
-                            : null
-                        }
-                        handlePostCard={handlePostCard}
-                        handleNextStep={handleNextStep}
-                      ></Delayed>
-                      {/* {element.content.length - 1 === index ? (
-                        <ButtonWrapper>
-                          <Button onClick={() => handleNextStep()}>
-                            {
-                              chatData.script[chatData.currentStep]
-                                .firstCategory
-                            }
-                          </Button>
-                        </ButtonWrapper>
-                      ) : null} */}
-                    </ListItem>
-                  );
-                });
-              })
-            : null}
-        </ChatList>
+      <Body ref={messagesEndRef} cardList={chatData.currentStep !== 2}>
+        <ScrollableFeed>
+          <ChatList ref={messagesEndRef}>
+            {chatData.script !== []
+              ? chatData.script.map((element: any, mainIndex: number) => {
+                  return element.content.map((el: any, index: any) => {
+                    console.log(
+                      Number(
+                        `${mainIndex + 1}${
+                          chatData.currentStep
+                        }${index}${Math.floor(Math.random() * (10 - 0) + 0)}`
+                      ),
+                      "현재 스탭"
+                    );
+                    return (
+                      <ListItem key={Number(`${mainIndex + 1}${index}`)}>
+                        <Delayed
+                          type={element.type}
+                          avatar={index === 0 && element.avatar}
+                          botName={index === 0 ? true : false}
+                          timer={index * 1200}
+                          image={
+                            element.image && index === 0 ? element.image : null
+                          }
+                          content={el}
+                          createdAt={
+                            index === element.content.length - 1 && element.time
+                          }
+                          setChatData={setChatData}
+                          handleVisiableButton={handleVisiableButton}
+                          category={
+                            chatData.script.length - 1 === mainIndex &&
+                            element.content.length - 1 === index
+                              ? chatData.script[chatData.currentStep]
+                                  .firstCategory
+                              : null
+                          }
+                          handlePostCard={handlePostCard}
+                          handleNextStep={handleNextStep}
+                        ></Delayed>
+                      </ListItem>
+                    );
+                  });
+                })
+              : null}
+          </ChatList>
+        </ScrollableFeed>
       </Body>
       <Footer cardList={chatData.currentStep === 2}>
-        {/* {chatData.script[chatData.currentStep].firstCategory ? (
-          <ButtonWrapper>
-            <Button onClick={() => handleNextStep()}>
-              {chatData.script[chatData.currentStep].firstCategory}
-            </Button>
-          </ButtonWrapper>
-        ) : null} */}
         {chatData.currentStep === 2 ? (
           <CardContianer mouse={mousePosition.xValue}>
             {chatData.isExistCard.length > 1
@@ -326,7 +307,6 @@ export default function Chat({
                       onMouseDown={handleMouseDown}
                       onMouseMove={handleMouseMove}
                       onMouseUp={handleMouseUp}
-                      onMouseLeave={handleMouseUp}
                     >
                       <Card></Card>
                     </CardWrapper>
@@ -413,7 +393,7 @@ const CardContianer = styled.div<any>`
   ${(props) =>
     props.mouse &&
     css`
-      transform: rotate(${-(props.mouse / 3)}deg);
+      transform: rotate(${-props.mouse / 2}deg);
     `}
   transition: all ease 1s;
 `;
@@ -465,7 +445,7 @@ const Body = styled.div<any>`
 	overflow-y: overlay;
 	margin: 0 auto;
   // background: url("./chatBackground.jpeg") no-repeat;
-	background-size: 100% 100%;
+	background-size: 100%;
 	${(props) =>
     props.cardList &&
     css`
@@ -499,7 +479,7 @@ const ListItem = styled.li`
 `;
 
 const ChatList = styled(ScrollToBottom)`
-  height: 99%;
+  height: 89%;
   padding: 3%;
   list-style-type: none;
 `;
