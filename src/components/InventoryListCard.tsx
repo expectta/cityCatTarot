@@ -86,6 +86,8 @@ export default function InventoryListCard({
               type="checkbox"
               checked={checkedCard.isChecked}
               onClick={() => handleCheckedCard(id)}
+              readOnly
+              // onChange={() => console.log()}
             ></CheckBox>
           </CheckBoxWrapper>
           <GoToDetail
