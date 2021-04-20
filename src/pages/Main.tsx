@@ -1,21 +1,19 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
-import {
-  Route,
-  Switch,
-  Link,
-  useRouteMatch,
-  useHistory,
-} from "react-router-dom";
-import { Slide } from "../components/Index";
+import { Link, useHistory } from "react-router-dom";
 import { BsJustify } from "react-icons/bs";
-import Inventory from "./Inventory";
-interface props {
-  loginInfo: any;
-  openModal: any;
-  handleLogOut: any;
-  setGreeting: any;
-  greeting: any;
+import { IloginInfo } from "../App";
+
+interface Iprops {
+  loginInfo: IloginInfo;
+  openModal(message: string): void;
+  handleLogOut(): void;
+  setGreeting(Igreeting): void;
+  greeting: Igreeting;
+}
+export interface Igreeting {
+  checkedChat: number;
+  greetingScript: string[][];
 }
 export default function Main({
   loginInfo,
@@ -23,19 +21,10 @@ export default function Main({
   handleLogOut,
   setGreeting,
   greeting,
-}: props) {
+}: Iprops) {
   const history = useHistory();
-  const urlMatch = useRouteMatch();
-  const [menu, setMenu] = useState({
-    name: "",
-  });
-  const handleChangeMenu = (menuName: string) => {
-    setMenu({
-      name: menuName,
-    });
-  };
 
-  const handleChangeChatType = (number: number) => {
+  const handleChangeChatType = (number: number): void => {
     setGreeting({ ...greeting, checkedChat: number });
   };
   const handleLogout = () => {
@@ -45,7 +34,6 @@ export default function Main({
   };
   return (
     <>
-      {/* <Slide></Slide> */}
       <Container>
         <Wrapper>
           <SliderWrapper>
