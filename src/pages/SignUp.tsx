@@ -4,9 +4,9 @@ import styled from "styled-components";
 import { strongPassword, isEmail } from "../utils/validation";
 import { requestSignUp } from "../axios/axiosRequest";
 interface props {
-  setModalVisible: any;
-  setModalMessage: any;
-  modalMessage: any;
+  setModalVisible(string): void;
+  setModalMessage(string): void;
+  modalMessage: string;
 }
 export default function SignUp({
   setModalVisible,
@@ -33,13 +33,6 @@ export default function SignUp({
   const closeModal = () => {
     setModalVisible(false);
   };
-  // modal창 오픈 시
-  // const openModal = buttonName => {
-  //   if (buttonName === "overlapping-button") {
-  //     setModalMessage("사용할 수 있는 email입니다.");
-  // 	}
-  //   setModalVisible(true);
-  // };
 
   const handleNickName = (event) => {
     setNickName(event.target.value);
@@ -116,12 +109,6 @@ export default function SignUp({
   const handleRequestSignUp = () => {
     console.log("회원 버튼 입력");
     const { validEmail, validPassword, validMobile } = validation;
-    // if (!isUsableEmail) {
-    //   console.log("email");
-    //   setModalMessage("email 중복을 확인 해주세요.");
-    //   setModalVisible(true);
-    //   return;
-    // }
     if (!validEmail) {
       console.log("Email 형식을 확인 해주세요");
       setModalMessage("Email 형식을 확인 해주세요");
@@ -188,14 +175,6 @@ export default function SignUp({
                 )}
               </TableData>
               <TableData></TableData>
-              {/* <TableData className="overlapping-cbutton">
-                <Button
-                  id="overlapping-button"
-                  onClick={handleRequestCheckEmail}
-                >
-                  중복확인{" "}
-                </Button>
-              </TableData> */}
             </TableRow>
             <TableRow>
               <TableData className="label">비밀번호</TableData>
@@ -271,11 +250,7 @@ export default function SignUp({
     </Wrapper>
   );
 }
-const NorificationModal = styled.div<any>``;
-const ToSiginUp = styled(Link)`
-  display: block;
-  color: red;
-`;
+
 const Logo = styled.img`
   margin-bottom: 20%;
   width: 50%;
@@ -387,7 +362,7 @@ const TableData = styled.td``;
 const UserInfoTable = styled.table`
   .label {
     text-align: left;
-    width: 100px;
+    width: 70px;
   }
   input {
     font-size: 1rem;
