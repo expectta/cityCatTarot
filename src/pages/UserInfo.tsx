@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
+import { IloginInfo } from "../App";
 import { requestUserInfo, requestModifyUserInfo } from "../axios/axiosRequest";
 import { strongPassword } from "../utils/validation";
 interface props {
-  loginInfo: any;
+  loginInfo: IloginInfo;
 }
 export default function Main({ loginInfo }: props) {
   const history = useHistory();
@@ -41,7 +42,14 @@ export default function Main({ loginInfo }: props) {
     const result = await requestUserInfo(
       JSON.parse(localStorage.getItem("loginInfo")!).userId
     );
+    console.log(
+      JSON.parse(localStorage.getItem("loginInfo")!).userId,
+      " 로컬데이터!!!!!!!!!!!!!!!!!!!!!!!",
+      result.id,
+      " =====결과 id"
+    );
     if (result.id === JSON.parse(localStorage.getItem("loginInfo")!).userId) {
+      console.log(result, " 회원정보 수정 후 업데이트");
       setUserInfo({
         ...userInfo,
         userId: result.userId,
@@ -71,6 +79,7 @@ export default function Main({ loginInfo }: props) {
         messageVisible: false,
         passwrodValidation: false,
       });
+      hadleGetUserInfo();
     }
     setMessage("");
   };
