@@ -5,10 +5,10 @@ interface Props {
   wait?: boolean;
   timer: number;
   content: string;
-  avatar: any;
-  createdAt: any;
+  avatar: string;
+  createdAt: string;
   botName: boolean;
-  image: any;
+  image: string;
   type: string;
   setChatData: any;
   handleVisiableButton: any;
@@ -34,7 +34,7 @@ const Delayed = ({
 
   const history = useHistory();
   useEffect(() => {
-    setInterval(() => {
+    setTimeout(() => {
       setShow(true);
     }, timer);
     return () => {
@@ -49,7 +49,7 @@ const Delayed = ({
     <>
       {type === "user" ? (
         <>
-          <Container type={type === "user"}>
+          <Container type={type === "user" && "true"}>
             <CreatedAt isExist={createdAt}>{createdAt}</CreatedAt>
             <ListContent>{content}</ListContent>
           </Container>
@@ -140,9 +140,9 @@ const ListContent = styled.span`
   max-width: 60%;
   background: black;
   margin: 1.5%;
-  font-size: 1.5rem;
+  font-size: 1rem;
   border-radius: 10px;
-  padding: 2%;
+  padding: 3%;
   color: white;
   border: 1px solid #cf5fbf;
   box-shadow: 0px 0px 11px 2px #6727d7fc;
