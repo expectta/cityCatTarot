@@ -201,9 +201,7 @@ export function requestModifyUserInfo(newData, userId) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   console.log(newData, "!!!!!!!!!!!!!!!!!", userId, " 유저 아이디");
   const result = axios
-    .patch(`${SERVER_URL}/patch-userInfo/${userId}`, {
-      newData,
-    })
+    .patch(`${SERVER_URL}/patch-userInfo/${userId}`, newData)
     .then((res) => {
       console.log(res.data, "수정된 회원정보");
       if (res.status === 200) {
