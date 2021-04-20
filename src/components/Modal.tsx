@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
 import styled from "styled-components";
 import Portal from "./Potal";
 
 interface Props {
-  onClose: any;
+  onClose(any): void;
   maskClosable: any;
   closable: any;
   visible: boolean;
