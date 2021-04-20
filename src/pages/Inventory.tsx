@@ -5,13 +5,13 @@ import { InventoryListCard } from "../components/Index";
 import { requestMyCardList } from "../axios/axiosRequest";
 import { useHistory } from "react-router-dom";
 import { requestMyCardDelete } from "../axios/axiosRequest";
-interface props {
-  loginInfo: any;
-  setMyTarotResult: any;
+import { IloginInfo } from "../App";
+interface Iprops {
+  setMyTarotResult(ImyTarotResult): void;
 }
-export default function Inventory({ loginInfo, setMyTarotResult }: props) {
+export default function Inventory({ setMyTarotResult }: Iprops) {
   const [cardList, setCardList] = useState<any[]>([]);
-  const [deletCard, setDeleteCard] = useState(0);
+  const [deletCard, setDeleteCard] = useState<number>(0);
   const history = useHistory();
 
   const handleInitialCardList = async () => {
@@ -53,39 +53,51 @@ export default function Inventory({ loginInfo, setMyTarotResult }: props) {
               history.go(-1);
             }}
           >
-            {"< Home으로"}
+            {"< Home"}
           </Home>
           <Container>My tarot result</Container>
           <Home></Home>
         </TitleWrapper>
         <CardListContainer>
-          <DeleteButton onClick={() => hadleDeleteCard()}>
-            {"체크항목 삭제"}
-          </DeleteButton>
-          <CardListWrapper>
-            {cardList.map((el: any, index: number) => {
-              console.log(el.inventoryId, "지금 콘텐츠");
-              return (
-                <InventoryListCard
-                  key={index}
-                  id={el.inventoryId}
-                  cardId={el.cardId}
-                  image={el.cardImageUrl}
-                  title={el.title}
-                  cardDetail={el.cardDetail}
-                  userInputSubject={el.userInputSubject}
-                  setMyTarotResult={setMyTarotResult}
-                  hadleDeleteCard={hadleDeleteCard}
-                  setDeleteCard={setDeleteCard}
-                ></InventoryListCard>
-              );
-            })}
-          </CardListWrapper>
+          {cardList.length === 0 ? (
+            <Nocard>보관함에 저장되어 있는 카드가 없습니다</Nocard>
+          ) : (
+            <>
+              <DeleteButton onClick={() => hadleDeleteCard()}>
+                {"체크항목 삭제"}
+              </DeleteButton>
+              <CardListWrapper>
+                {cardList.map((el: any, index: number) => {
+                  console.log(el.inventoryId, "지금 콘텐츠");
+                  return (
+                    <InventoryListCard
+                      key={index}
+                      id={el.inventoryId}
+                      cardId={el.cardId}
+                      image={el.cardImageUrl}
+                      title={el.title}
+                      cardDetail={el.cardDetail}
+                      userInputSubject={el.userInputSubject}
+                      setMyTarotResult={setMyTarotResult}
+                      hadleDeleteCard={hadleDeleteCard}
+                      setDeleteCard={setDeleteCard}
+                    ></InventoryListCard>
+                  );
+                })}
+              </CardListWrapper>
+            </>
+          )}
         </CardListContainer>
       </Wrapper>
     </>
   );
 }
+const Nocard = styled.div`
+  color: white;
+  width: 100%;
+  margin-top: 10%;
+  text-align: center;
+`;
 const DeleteButton = styled.div`
   text-align: end;
   cursor: pointer;
@@ -102,7 +114,6 @@ const TitleWrapper = styled.div`
 `;
 const Home = styled.span`
   margin: 0 auto;
-  width: 200px;
   background: #d751ef;
   text-align: start;
   font-size: 1.5rem;
@@ -122,6 +133,6 @@ const CardListWrapper = styled.ul`
 const Container = styled.span`
   margin: 0 auto;
   background: #d751ef;
-  text-align: center;
   font-size: 3rem;
+  flex: 2 auto;
 `;
