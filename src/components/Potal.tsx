@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { createPortal } from "react-dom";
 
-type PotalProps = {
-  children: any;
+type IpotalProps = {
+  children: JSX.Element | JSX.Element[];
   elementId: string;
 };
-export default function Portal({ children, elementId }: PotalProps) {
+export default function Portal({ children, elementId }: IpotalProps) {
   const rootElement = useMemo(() => document.getElementById(elementId), [
     elementId,
   ])!;
