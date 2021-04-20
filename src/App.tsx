@@ -13,13 +13,28 @@ import {
   MyCard,
 } from "./pages/Index";
 import { Modal } from "./components/Index";
+interface Igreeting {
+  checkedChat: number;
+  greetingScript: string[][];
+}
+export interface IloginInfo {
+  userId: number;
+  isLogin: boolean;
+}
+export interface ImyTarotResult {
+  cardId: string;
+  title: string;
+  image: string;
+  cardDetail: string;
+  userInputSubject: string;
+}
 export default function App() {
   const history = createMemoryHistory();
-  const [loginInfo, setLoginInfo] = useState({
+  const [loginInfo, setLoginInfo] = useState<IloginInfo>({
     userId: 0,
     isLogin: false,
   });
-  const [myTarotResult, setMyTarotResult] = useState({
+  const [myTarotResult, setMyTarotResult] = useState<ImyTarotResult>({
     cardId: "",
     title: "",
     image: "",
@@ -27,7 +42,7 @@ export default function App() {
     userInputSubject: "",
   });
 
-  const [greeting, setGreeting] = useState({
+  const [greeting, setGreeting] = useState<Igreeting>({
     checkedChat: 0,
     greetingScript: [
       ["안녕~", "나는 타로를 봐주는 냥냥이야.", "오늘의 운세를 봐 줄까냥?"],
@@ -40,8 +55,8 @@ export default function App() {
     ],
   });
   // modal 상태
-  const [modalMessage, setModalMessage] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState<string>("");
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
   // loading 상태
   const [isLoading, setIsLoading] = useState<boolean>(false);
   // modal창 제거
@@ -53,7 +68,7 @@ export default function App() {
     setModalVisible(false);
   };
   //modal창 활성화
-  const openModal = (message: string) => {
+  const openModal = (message: string): void => {
     setModalMessage(message);
     setModalVisible(true);
   };
@@ -68,7 +83,7 @@ export default function App() {
     alert("로그아웃 되었습니다");
   };
   //로그인
-  const handleLogin = () => {
+  const handleLogin = (): void => {
     if (localStorage.getItem("loginInfo")) {
       setLoginInfo({
         userId: JSON.parse(localStorage.getItem("loginInfo")!).userId,
@@ -123,10 +138,7 @@ export default function App() {
             exact
             path="/invetory"
             render={() => (
-              <Inventory
-                loginInfo={loginInfo}
-                setMyTarotResult={setMyTarotResult}
-              ></Inventory>
+              <Inventory setMyTarotResult={setMyTarotResult}></Inventory>
             )}
           ></Route>
           <Route
@@ -137,7 +149,7 @@ export default function App() {
           <Route exact path="/tarotChat" component={Chat}>
             <Chat
               greetingList={greeting.greetingScript[greeting.checkedChat]}
-              greeting={greeting.checkedChat}
+              greeting={greeting}
               openModal={openModal}
               loginInfo={loginInfo}
               handleLogOut={handleLogOut}
