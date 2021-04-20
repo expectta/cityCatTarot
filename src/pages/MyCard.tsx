@@ -1,8 +1,9 @@
 import react from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import { ImyTarotResult } from "../App";
 interface props {
-  myTarotResult: any;
+  myTarotResult: ImyTarotResult;
 }
 export default function MyCard({ myTarotResult }: props) {
   const history = useHistory();
