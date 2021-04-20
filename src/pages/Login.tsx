@@ -3,14 +3,13 @@ import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
 import { requestLogin } from "../axios/axiosRequest";
 interface props {
-  handleLogin: any;
+  handleLogin(): void;
 }
 export default function SignUp({ handleLogin }: props) {
   const history = useHistory();
-  const PREVIOUS_PAGE = -1;
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const handleEmail = (event) => {
     setEmail(event.target.value);
   };
