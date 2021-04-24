@@ -43,21 +43,22 @@
 - 유저에게 카드를 볼것인지 의사를 묻는다.
 ![화면 기록 2021-04-24 오후 6 15 52](https://user-images.githubusercontent.com/58800945/115953981-6748d280-a529-11eb-9509-abb03ecb34d1.gif)
 
-### 보관
+### 보관함
 - 오늘 본 카드는 제목을 삽입하여 저장
 - 보관함에서 카드의 내용 확인
 - 보관함 카드 삭제
-- 
 ![화면 기록 2021-04-24 오후 6 26 42](https://user-images.githubusercontent.com/58800945/115954243-da9f1400-a52a-11eb-99ba-003a2a7dd0bb.gif)
 
 
 
- ### 회원가입/로그인
-- 사용자의 잘못된입력(email 형식, passord 8자이상, 전화번호 형식)을 유효성 검사를 통해 예외처리함.
+ ### 회원가입/로그인/사용자 정보변경
+ - 회원가입 시 email 형식 유효성 검사
+ - 비밀번호 문자 + 숫자 + 특수기호 유효성검사
+ - 로그인 후 사용자 정보변경
+ - 
+  ![화면 기록 2021-04-24 오후 6 32 54](https://user-images.githubusercontent.com/58800945/115954445-0d95d780-a52c-11eb-9f99-115f6c8c2d1d.gif)
 
-<img width="550" height="400" alt="스크린샷 2021-02-13 오후 4 56 57" src="https://user-images.githubusercontent.com/58800945/107902870-ffa36380-6f8a-11eb-9a07-b44e011c3d0f.png">
-<img width="300" height="400" alt="스크린샷 2021-02-13 오후 4 56 57" src="https://user-images.githubusercontent.com/58800945/107902691-81df5800-6f8a-11eb-85ac-0458d971bb5b.png">
-<img width="300" height="400" alt="스크린샷 2021-02-13 오후 4 57 19" src="https://user-images.githubusercontent.com/58800945/107902715-902d7400-6f8a-11eb-9c5d-9fef50aff1e1.png">
+
 
  ### 회원정보/myrecipe
 
