@@ -23,7 +23,7 @@
 
 |이름|담당|설명|
 |:---:|:---:|:---:|
-|이소연|Back End|설명설명설명설명|
+|이소연|Back End|자바 스프링 서버, 서버배포|
 
 ---
 
@@ -32,10 +32,10 @@
 
 ![image](https://user-images.githubusercontent.com/58800945/115952444-e685d880-a520-11eb-916e-edff7461b574.png)
 
-### 인트로화면
+### 메인화면
 <img width="855" alt="스크린샷 2021-02-13 오후 4 56 51" src="https://user-images.githubusercontent.com/58800945/107901901-46438e80-6f88-11eb-81c7-eee9738d218e.png">
 
-### 메인화면
+### 채팅화면
 - 메인화면에서 확인 할 수 있는 정보 : 최근 등록된 레시피, 이번달 최고의 레시피, 금주의 탑 4 레시피
 - 메인화면에서 사용할 수 있는 기능 :  카테고리별 레시피 목록 page이동, 검색어별 레시피 목록 page이동, 회원정보 버튼, 회원가입 버튼
 <img width="855" alt="스크린샷 2021-02-13 오후 4 56 57" src="https://user-images.githubusercontent.com/58800945/107901966-78ed8700-6f88-11eb-90f0-0d1850a7bdbb.png">
@@ -54,7 +54,7 @@
 <img width="855" alt="스크린샷 2021-02-13 오후 4 56 57" src="https://user-images.githubusercontent.com/58800945/107902513-0087c580-6f8a-11eb-89d0-e5919ea45aba.png">
 
 
- ### 회원가입/로그인/비밀번호찾기
+ ### 회원가입/로그인
 - 사용자의 잘못된입력(email 형식, passord 8자이상, 전화번호 형식)을 유효성 검사를 통해 예외처리함.
 
 <img width="550" height="400" alt="스크린샷 2021-02-13 오후 4 56 57" src="https://user-images.githubusercontent.com/58800945/107902870-ffa36380-6f8a-11eb-9a07-b44e011c3d0f.png">
@@ -68,7 +68,7 @@
 
 <img width="700" alt="스크린샷 2021-02-13 오후 4 57 41" src="https://user-images.githubusercontent.com/58800945/107903809-7e999b80-6f8d-11eb-88d0-c08fc2e7d7e6.png">
 
-#### myrecipe
+#### 
 - 유저가 등록한 recipe list 확인 , carousel로 화면 recipe list 전환기능, recipe 클릭시 recipe 상세 page전환
 
 
