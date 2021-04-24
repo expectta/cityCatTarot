@@ -33,28 +33,11 @@
 ![image](https://user-images.githubusercontent.com/58800945/115952444-e685d880-a520-11eb-916e-edff7461b574.png)
 
 ### 메인화면
-![화면 기록 2021-04-24 오후 5 20 24](https://user-images.githubusercontent.com/58800945/115953382-1a173180-a526-11eb-9a8f-c1c4dd4582b1.gif)
-<img width="855" alt="스크린샷 2021-02-13 오후 4 56 57" src="https://user-images.githubusercontent.com/58800945/115953382-1a173180-a526-11eb-9a8f-c1c4dd4582b1.gif">
 ![화면 기록 2021-04-24 오후 5 20 24](https://user-images.githubusercontent.com/58800945/115953451-97db3d00-a526-11eb-8694-5a7cfec2663f.gif)
 
 
 ### 채팅화면
-- 메인화면에서 확인 할 수 있는 정보 : 최근 등록된 레시피, 이번달 최고의 레시피, 금주의 탑 4 레시피
-- 메인화면에서 사용할 수 있는 기능 :  카테고리별 레시피 목록 page이동, 검색어별 레시피 목록 page이동, 회원정보 버튼, 회원가입 버튼
-<img width="855" alt="스크린샷 2021-02-13 오후 4 56 57" src="https://user-images.githubusercontent.com/58800945/107901966-78ed8700-6f88-11eb-90f0-0d1850a7bdbb.png">
-
-
-1 . 최근등록된 레시피 확인
-
-<img width="855" alt="스크린샷 2021-02-13 오후 4 56 57" src="https://user-images.githubusercontent.com/58800945/107902337-78092500-6f89-11eb-8762-c3b40b9e2a9c.png">
-
-2 . 이번달 최고의 레시피
-
-<img width="855" alt="스크린샷 2021-02-13 오후 4 56 57" src="https://user-images.githubusercontent.com/58800945/107902437-c74f5580-6f89-11eb-9486-04ba26aa7f95.png">
-
-3 . 금주의 탑 4레시피
-
-<img width="855" alt="스크린샷 2021-02-13 오후 4 56 57" src="https://user-images.githubusercontent.com/58800945/107902513-0087c580-6f8a-11eb-89d0-e5919ea45aba.png">
+![화면 기록 2021-04-24 오후 5 59 11](https://user-images.githubusercontent.com/58800945/115953547-1c2dc000-a527-11eb-848f-643b3ce6e996.gif)
 
 
  ### 회원가입/로그인
