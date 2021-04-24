@@ -28,8 +28,9 @@
 ---
 
 ## 시스템 아키텍쳐
-
 [시스템 아키텍쳐](https://www.figma.com/file/nCiqEww5eb2fL19BPb7Z2w/Untitled?node-id=0%3A1)
+
+![image](https://user-images.githubusercontent.com/58800945/115952444-e685d880-a520-11eb-916e-edff7461b574.png)
 
 ### 인트로화면
 <img width="855" alt="스크린샷 2021-02-13 오후 4 56 51" src="https://user-images.githubusercontent.com/58800945/107901901-46438e80-6f88-11eb-81c7-eee9738d218e.png">
