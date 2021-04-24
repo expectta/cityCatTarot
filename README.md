@@ -34,6 +34,7 @@
 
 ### 메인화면
 ![화면 기록 2021-04-24 오후 5 20 24](https://user-images.githubusercontent.com/58800945/115953382-1a173180-a526-11eb-9a8f-c1c4dd4582b1.gif)
+<img width="855" alt="스크린샷 2021-02-13 오후 4 56 57" src="https://user-images.githubusercontent.com/58800945/115953382-1a173180-a526-11eb-9a8f-c1c4dd4582b1.gif">
 
 ### 채팅화면
 - 메인화면에서 확인 할 수 있는 정보 : 최근 등록된 레시피, 이번달 최고의 레시피, 금주의 탑 4 레시피
