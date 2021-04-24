@@ -37,8 +37,7 @@
 
 
 ### 채팅화면
-![화면 기록 2021-04-24 오후 5 59 38](https://user-images.githubusercontent.com/58800945/115953768-459b1b80-a528-11eb-8e3a-cf6ee3c20e12.gif)
-
+![화면 기록 2021-04-24 오후 6 15 52](https://user-images.githubusercontent.com/58800945/115953981-6748d280-a529-11eb-9509-abb03ecb34d1.gif)
 
 
  ### 회원가입/로그인
