@@ -51,7 +51,7 @@
 
 
 
- ### 회원가입/로그인/사용자 정보변경
+### 회원가입/로그인/사용자 정보변경
  - 회원가입 시 email 형식 유효성 검사
  - 비밀번호 문자 + 숫자 + 특수기호 유효성검사
  - 로그인 후 사용자 정보변경
@@ -60,75 +60,6 @@
 
 
 
- ### 회원정보/myrecipe
-
-#### 회원정보
-- 프로필등록 / 변경 , 비밀번호 변경, 전화번호 변경, 회원탈퇴기능
-
-<img width="700" alt="스크린샷 2021-02-13 오후 4 57 41" src="https://user-images.githubusercontent.com/58800945/107903809-7e999b80-6f8d-11eb-88d0-c08fc2e7d7e6.png">
-
-#### 
-- 유저가 등록한 recipe list 확인 , carousel로 화면 recipe list 전환기능, recipe 클릭시 recipe 상세 page전환
-
-
-
-
-<br/>
-<br/> 
-
-### 레시피 작성
- 1. 레시피 정보 작성 , 순서(step)별 이미지 & 설명 등록 , 필수입력사항 미입력시 예외처리
-
-
-
-
-### 카테고리별, 검색어별 레시피 목록확인
-- 유저가 레시피를 등록할때 카테고리를 정할 수 있으며, 검색은 제목의 필터링을 통해 레시피를 검색한다
-
-
-<br/>
-<br/>
-
-
-<br/>
-<br/>
-
----
-## 스키마
-
-[스키마 dbdiagram 링크](https://dbdiagram.io/d/601bc54e80d742080a3925bd)
-
-<img width="855" alt="스크린샷 2021-02-13 오후 4 38 35" src="https://user-images.githubusercontent.com/66257825/107844796-f6df5000-6e19-11eb-9975-5dd777a74fc6.png">
-
-|1 (hasMany)| N (belongsTo)|
-|:---:|:---:|
-| users |contents|
-| users |comments|
-| users |labals |
-| contents |comments|
-| contents |images|
-| categories | contents|
-
-|N (belongsToMany)| N (belongsToMany)|
-|:---:|:---:|
-| users |labels|
-| labels |users|
-
-
-|N (belongsTo)| N |
-|:---:|:---:|
-| user_label |users|
-| user_label |label|
-
----
-API 
-
-
-
-<br/>
-
-
----
 
 ## 기술 스택
 
@@ -169,82 +100,5 @@ API
 |prettier| 협업간 코드style의 통일 목적 (airbnb)|
 
 
-### Back End
 
-- Framework
-
-|이름|내용|
-|:---:|:---:|
-|Node js| 비동기 활용 퍼포먼스 증가 목적 |
-|Express| 라우팅, Node js 효율적인 사용 목적 |
-
-<br/>
-<br/>
-
-- Database
-
-<img src="https://user-images.githubusercontent.com/66257825/107845928-bdf7a900-6e22-11eb-958e-48322bfdd014.png" width="200" height="200">
-
-
-
-<br/>
-<br/>
-
-- Library
-
-
-
-|이름|내용|
-|:---:|:---:|
-|Sequelize| database 관계 설정, ORM형식으로 DB CRUD 목적 |
-|Multer S3| 레시피 이미지 S3 이미지 버켓에 저장목적 |
-|crypto|유저 비밀번호 암호화 저장 목적|
-
-
-
-
-<br/>
-<br/>
-
-- Deploy
-
-
-
-
-
-|이름|내용|
-|:---:|:---:|
-|AWS S3| 이미지 전용 버킷 / 레시피, 유저 아바타 사진 관리 목적 |
-|AWS EC2|가상 서버를 구축, 보안 및 네트워크 구성, 스토리지 관리 목적 |
-|AWS RDS|배포용 DB / 데이터베이스 저장 목적|
-|AWS ROUTE 53| Homemade 도메인 연결 목적 |
-|AWS ELB|네트워크 트래픽 분산을 통한 애플리케이션 확장성 개선 목적|
-|AWS certificate manager|HTTPS 제공, 보안 콘텐츠 제공 목적|
-|PM2|NodeJS 프로세서 관리, 무중단 서비스 운영 목적 |
-
- 
-<br/>
-<br/>
-
-- Tools
-
-
-
-
-
-
-|이름|내용|
-|:---:|:---:|
-|gitbook| API 문서 작성 목적 |
-|dbdiagram| 스키마 테이블 기획, 관계구성 표현 목적 |
-|postman| API 작동 테스트 목적 |
-|git|버전관리|
-|ESlint| 협업간 코드style의 통일 목적|
-|prettier| 협업간 코드style의 통일 목적 (airbnb)|
-
-<br/>
-<br/>
-
-
----
 
