@@ -74,7 +74,7 @@
 |axios | 서버 비동기 통신 |
 |styled_componets | javascript 파일 내에서 CSS를 사용하여 별도의 CSS 파일 생성 불필요, 스타일컴포넌트에 props를 전달수있다|
 |react-scroll-to-bottom|채팅 화면에서 '봇'의 채팅글이 랜더링 될 때 스크롤을 항상 최 하단으로 유지하기 위함|
-|typescript |데이터 타입에 대한 정확한 명시를 통해 코드의 오류를 줄인다.| 
+|typescript | 정적 타입을 지원하므로 컴파일 단계에서 오류를 포착할 수 있는 장점이 있다. | 
 
 <br/>
 
