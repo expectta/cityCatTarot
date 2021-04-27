@@ -9,6 +9,5 @@ export default function Portal({ children, elementId }: IpotalProps) {
   const rootElement = useMemo(() => document.getElementById(elementId), [
     elementId,
   ])!;
-
   return createPortal(children, rootElement);
 }
