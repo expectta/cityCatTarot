@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled, { css } from "styled-components";
-import { arr } from "../assets/Data";
-import { PrintSpeach } from "../assets/PrintSpeach";
 import ScrollToBottom, { useScrollToBottom } from "react-scroll-to-bottom";
 import { useHistory, Link } from "react-router-dom";
 // import Delayed from "react-delay-render";
@@ -29,11 +27,17 @@ export default function Chat({
   closeModal,
 }: props) {
   const history = useHistory();
+  const [cardList, setCardList] = useState<any[]>([]);
+  //마우스 좌표
   const [mousePosition, setMousePosition] = useState({
     startposition: 0,
     xValue: 0,
     isMove: false,
   });
+  const messagesEndRef = useRef<null | HTMLDivElement>(null);
+  //채팅창 채팅 리스트 추가될 경우 스크롤을 지속적으로 아래로 이동
+  const scrollToBottom = useScrollToBottom();
+  //채팅 리스트
   const [chatData, setChatData] = useState({
     botName: "캣봇",
     currentStep: 0,
@@ -62,12 +66,13 @@ export default function Chat({
       },
     ],
   });
-  const [cardList, setCardList] = useState<any[]>([]);
+  //보관함에 저장 할 카드에 대한 정보
   const [cardTitle, setCardTitle] = useState({
     message: "",
     visible: false,
     posted: false,
   });
+  //유저의 피드백에 응답하기 위해 다음 채팅글 전환 핸들러
   const handleNextStep = () => {
     const time = currentTime();
     const choiceScript = [
@@ -101,10 +106,7 @@ export default function Chat({
       script: [...chatData.script, ...choiceScript],
     });
   };
-  const handleCancle = () => {
-    history.push("/");
-  };
-
+  //유저와 상호작용을 하기 위한 버튼 생성 핸들러
   const handleVisiableButton = () => {
     setChatData({
       ...chatData,
@@ -121,8 +123,8 @@ export default function Chat({
     });
     if (chatData.currentStep) console.log(result, "요청결과");
   };
+  //마우스 좌표 업데이트 핸들러
   const handleMouseMove = (event) => {
-    // console.log(event, "=X , ", event);
     if (mousePosition.isMove) {
       setMousePosition({
         ...mousePosition,
@@ -130,33 +132,24 @@ export default function Chat({
       });
     }
   };
-  useEffect(() => {
-    if (mousePosition.isMove) {
-      console.log(mousePosition.xValue / 2, "= 마우스 이동 계산값");
-    }
-  }, [mousePosition]);
   //마우스 다운 핸들러
+  //!!카드를 선택하는 과정에서 클리 후 마우스 좌표를 표시하고
+  //!!마우스 업 이벤트 시 좌표를 출력하지 않는다.
   const handleMouseDown = (event) => {
-    console.log(event.clientX, " = 마우스 다운위치");
     setMousePosition({
       ...mousePosition,
       startposition: event.clientX,
       isMove: true,
     });
   };
+  //마우스 업 핸들러
   const handleMouseUp = (event) => {
-    console.log(event.clientX, " = 마우스 업 위치");
     setMousePosition({
       ...mousePosition,
       startposition: 0,
       isMove: false,
     });
   };
-
-  useEffect(() => {
-    console.log(cardTitle.message, "입력값이 변할떄");
-    console.log(cardTitle.message.length, "입력값이 변할때 길이");
-  }, [cardTitle]);
   //선택한 카드 보관함으로 저장
   const handlePostCard = () => {
     if (loginInfo.isLogin) {
@@ -200,8 +193,6 @@ export default function Chat({
   };
   //카드를 보관함에 저장
   const handleSaveCard = () => {
-    console.log(cardTitle.message, " 카드 이름");
-    console.log(cardTitle.message.length, " 카드 이름 길이");
     if (cardTitle.message.length === 0) {
       alert("제목을 입력하세요");
     }
@@ -223,18 +214,13 @@ export default function Chat({
       closeModal();
     }
   };
+  //유저가 타로점 보는것에 응답으로 카드 목록을 서버에 요청
   useEffect(() => {
-    console.log(chatData.currentStep, "현재 스탭");
     if (chatData.currentStep === 1) {
       handleCardRequest();
     }
-    return () => {
-      console.log("타이밍 보기");
-    };
   }, [chatData.currentStep]);
-  const messagesEndRef = useRef<null | HTMLDivElement>(null);
-
-  const scrollToBottom = useScrollToBottom();
+  //채팅글이 화면에서 벗어날 경우 스크롤을 가장 아래로 이동
   useEffect(() => {
     return () => {
       scrollToBottom();
@@ -342,7 +328,6 @@ export default function Chat({
     </Container>
   );
 }
-const ButtonWrapper = styled.div``;
 const ModalWrapper = styled.div`
   width: 50%;
   height: 60%;
@@ -353,19 +338,12 @@ const ModalWrapper = styled.div`
   border-radius: 10px;
 `;
 
-const CloseButton = styled.div`
-  text-align: end;
-  font-size: 1.5rem;
-  cursor: pointer;
-  margin-bottom: 16%;
-`;
 const Modal = styled.div`
   width: 500px;
   height: 200px;
   position: absolute;
   top: 30%;
 `;
-const CardPostWrapper = styled.div``;
 const PostButton = styled.div`
   background: #6f6eff;
   width: 40%;
