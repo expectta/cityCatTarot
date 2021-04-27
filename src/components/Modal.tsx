@@ -16,7 +16,6 @@ export default function Modal({
   visible,
   children,
 }: Props) {
-  //TODO : type 확인 필요
   const onMaskClick = (e: any) => {
     if (e.target === e.currentTarget) {
       onClose(e);
