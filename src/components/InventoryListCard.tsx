@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import MyCard from "../pages/MyCard";
-import react, { useState, useEffect } from "react";
+import { useState } from "react";
 interface props {
   image: string;
   title: string;
@@ -24,7 +23,7 @@ export default function InventoryListCard({
   hadleDeleteCard,
   setDeleteCard,
 }: props) {
-  console.log(image, "=이미지", title, " =제목");
+  //보관함에 있는 카드 중 체크보스로 선택된 카드 정보
   const [checkedCard, setCheckedCard] = useState({
     isChecked: false,
     inventoryId: 0,
@@ -35,7 +34,8 @@ export default function InventoryListCard({
       userInputSubject: "",
     },
   });
-  const handleCheckedCard = (id) => {
+  //보관함 리스트 카드에 대한 체크박스 핸들러
+  const handleCheckedCard = (id: number) => {
     if (checkedCard.isChecked) {
       setCheckedCard({
         isChecked: false,
@@ -61,8 +61,8 @@ export default function InventoryListCard({
     });
     setDeleteCard(id);
   };
-
-  const handleCurrentCardId = (e, id) => {
+  //보관함에 있는 카드중 자세한 내용을 확인하기 위한 핸들러
+  const handleCurrentCardId = () => {
     setMyTarotResult({
       cardId: cardId,
       title: title,
@@ -70,13 +70,7 @@ export default function InventoryListCard({
       cardDetail: cardDetail,
       userInputSubject: userInputSubject,
     });
-    console.log(e.currentTarget.id, " 현재카드 ");
-    console.log(id, " 현재 id ");
   };
-
-  useEffect(() => {
-    console.log(checkedCard, " 선택된 카드");
-  }, [checkedCard]);
   return (
     <Container>
       <ListWrapper>
@@ -87,20 +81,17 @@ export default function InventoryListCard({
               checked={checkedCard.isChecked}
               onClick={() => handleCheckedCard(id)}
               readOnly
-              // onChange={() => console.log()}
             ></CheckBox>
           </CheckBoxWrapper>
           <GoToDetail
             to={`/myCard`}
             onClick={(e) => {
-              handleCurrentCardId(e, id);
+              handleCurrentCardId();
             }}
           >
             <CardImage src={image}></CardImage>
           </GoToDetail>
         </ImageWrapper>
-
-        {/* <CardTitle>{title}</CardTitle> */}
         <CardTitle> 제목 : {userInputSubject}</CardTitle>
         <CreatedAt></CreatedAt>
       </ListWrapper>
