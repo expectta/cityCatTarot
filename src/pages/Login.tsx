@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
 import { requestLogin } from "../axios/axiosRequest";
@@ -10,13 +10,15 @@ export default function SignUp({ handleLogin }: props) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  //사용자 입력값 업데이트
   const handleEmail = (event) => {
     setEmail(event.target.value);
   };
   const handlePassword = (event) => {
     setPassword(event.target.value);
   };
-  const clickLogin = async () => {
+  //로그인 핸들러
+  const handleClickLogin = async () => {
     if (email && password) {
       const result = await requestLogin(email, password);
       handleLogin();
@@ -62,16 +64,9 @@ export default function SignUp({ handleLogin }: props) {
                 <Left></Left>
                 <Right></Right>
               </Background>
-              <Button type="button" onClick={clickLogin}>
+              <Button type="button" onClick={handleClickLogin}>
                 로그인
               </Button>
-
-              {/* <KakaoLogin
-                token={process.env.REACT_APP_KAKAO_JSAVASCRIPT_KEY}
-                onSuccess={console.log}
-                onFail={console.error}
-                onLogout={console.info}
-              /> */}
               <Background>
                 <Left></Left>
                 <Right></Right>
