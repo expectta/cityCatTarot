@@ -30,20 +30,10 @@ export default function SignUp({
     validPassword: false,
     validMobile: false,
   });
-  const closeModal = () => {
-    setModalVisible(false);
-  };
-
+  //update nickname input value
   const handleNickName = (event) => {
     setNickName(event.target.value);
   };
-
-  const closeForm = () => {
-    setEmail("");
-    setNickName("");
-    setMessage("");
-  };
-
   // 비밀번호 일치여부 판단
   //! 비밀번호 , 비밀번호 확인 input 태그에 똑같은 조건이 모두 있어야 함.
   const handleFirstPassword = (event) => {
@@ -53,7 +43,6 @@ export default function SignUp({
       ...validation,
       validPassword: strongPassword(value),
     });
-
     if (lastPassword.length > 0) {
       if (value !== lastPassword) {
         setModalMessage("비밀번호 불일치");
@@ -66,6 +55,7 @@ export default function SignUp({
       }
     }
   };
+  //update email input value
   const handleEmail = (event) => {
     setEmail(event.target.value);
     setValidation({
@@ -73,6 +63,7 @@ export default function SignUp({
       validEmail: isEmail(event.target.value),
     });
   };
+  //update password input value
   const handleLastPassword = (event) => {
     const { value } = event.target;
     setLastPassword(value);
@@ -86,49 +77,19 @@ export default function SignUp({
       setIsValidPassword(true);
     }
   };
-  // email 중복여부 체크
-  const handleRequestCheckEmail = () => {
-    const { validEmail } = validation;
-
-    if (!validEmail) {
-      setModalMessage("Email 형식을 확인 해 주세요");
-      setModalVisible(true);
-      return;
-    }
-    if (email !== "") {
-      try {
-      } catch (err) {
-        console.log(err);
-      }
-      return;
-    }
-    setModalMessage("email을 입력해주세요.");
-    setModalVisible(true);
-  };
   // 회원등록 요청
   const handleRequestSignUp = () => {
-    console.log("회원 버튼 입력");
     const { validEmail, validPassword, validMobile } = validation;
     if (!validEmail) {
-      console.log("Email 형식을 확인 해주세요");
       setModalMessage("Email 형식을 확인 해주세요");
       setModalVisible(true);
       return;
     }
     if (!validPassword) {
-      console.log("비밀번호 규칙을 확인 해 주세요요");
       setModalMessage("비밀번호 규칙을 확인 해 주세요");
       setModalVisible(true);
       return;
     }
-    console.log(
-      lastPassword,
-      "비번",
-      isUsableEmail,
-      "eamil",
-      nickName,
-      "닉네임"
-    );
     if (lastPassword && nickName) {
       try {
         const result = requestSignUp(lastPassword, email, nickName);
