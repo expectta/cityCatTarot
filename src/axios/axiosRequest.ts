@@ -1,35 +1,25 @@
 import axios from "axios";
-import { useHistory } from "react-router-dom";
-import { strongPassword } from "../utils/validation";
 
-// axios.defaults.withCredentials = true;
 const SERVER_URL = "http://3.36.182.36:8080";
 //모든 카드 리스트
 export function requestCardList() {
-  // axios.defaults.headers.common["authorization"] = JSON.parse(
-  //   localStorage.getItem("loginInfo")!
-  // ).accessToken;
   const result = axios
     .get(`${SERVER_URL}/tarotChat`)
     .then((res) => {
       if (res.status === 200) {
-        console.log(res.data, " 리스트 결과값");
         return res.data;
       } else {
         alert("데이터가 없습니다");
       }
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch((err) => {});
   return result;
 }
-
+//유저 로그인
 export function requestLogin(email: string, password: string) {
   const result = axios
     .post(`${SERVER_URL}/session`, { email: email, password: password })
     .then((res) => {
-      console.log(res, "악시오스 결과");
       if (res.status === 201) {
         const accessToken = res.data.accessToken;
         alert("로그인 되었습니다.");
@@ -51,6 +41,7 @@ export function requestLogin(email: string, password: string) {
     });
   return result;
 }
+//회원가입
 export function requestSignUp(
   lastPassword: string,
   email: string,
@@ -67,7 +58,6 @@ export function requestSignUp(
       }
     )
     .then((res) => {
-      console.log(res, "악시오스 결과");
       if (res.status === 201) {
         return true;
       } else {
@@ -76,11 +66,11 @@ export function requestSignUp(
     })
     .catch((err) => {
       return false;
-      console.log(err);
     });
   return result;
 }
 
+//카드 보관함 저장요청
 export function requestPostCard(
   userId,
   cardId,
@@ -90,9 +80,7 @@ export function requestPostCard(
   cardDetail,
   userIndputSubject
 ) {
-  // axios.defaults.withCredentials = true;
   const token = JSON.parse(localStorage.getItem("loginInfo")!).accessToken;
-  // axios.defaults.withCredentials = true;
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   const result = axios
     .post(
@@ -114,7 +102,6 @@ export function requestPostCard(
       }
     )
     .then((res) => {
-      console.log(res, "악시오스 결과");
       if (res.status === 201) {
         return true;
       } else {
@@ -123,20 +110,16 @@ export function requestPostCard(
     })
     .catch((err) => {
       return false;
-      console.log(err);
     });
   return result;
 }
-
+//보관함에 저장된 카드리스트 요청
 export function requestMyCardList(userId) {
-  // axios.defaults.withCredentials = true;
   const token = JSON.parse(localStorage.getItem("loginInfo")!).accessToken;
-  // axios.defaults.withCredentials = true;
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   const result = axios
     .get(`${SERVER_URL}/inventory/get-card/${userId}`)
     .then((res) => {
-      console.log(res, "보관함 카드 리스트");
       if (res.status === 200) {
         return res.data;
       } else {
@@ -145,20 +128,16 @@ export function requestMyCardList(userId) {
     })
     .catch((err) => {
       return false;
-      console.log(err);
     });
   return result;
 }
-
+//보관함에 저장된 카드 삭제 요청
 export function requestMyCardDelete(inventoryId) {
-  // axios.defaults.withCredentials = true;
   const token = JSON.parse(localStorage.getItem("loginInfo")!).accessToken;
-  // axios.defaults.withCredentials = true;
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   const result = axios
     .delete(`${SERVER_URL}/inventory/delete-card/${inventoryId}`)
     .then((res) => {
-      console.log(res, " 카드 삭제요청 결과");
       if (res.status === 200) {
         return true;
       } else {
@@ -167,20 +146,17 @@ export function requestMyCardDelete(inventoryId) {
     })
     .catch((err) => {
       return false;
-      console.log(err);
     });
   return result;
 }
 
+//유저정보 요청
 export function requestUserInfo(userId) {
-  // axios.defaults.withCredentials = true;
   const token = JSON.parse(localStorage.getItem("loginInfo")!).accessToken;
-  // axios.defaults.withCredentials = true;
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   const result = axios
     .get(`${SERVER_URL}/users/${userId}`)
     .then((res) => {
-      console.log(res.data, " 카드 삭제요청 결과");
       if (res.status === 200) {
         return res.data;
       } else {
@@ -189,21 +165,16 @@ export function requestUserInfo(userId) {
     })
     .catch((err) => {
       return false;
-      console.log(err);
     });
   return result;
 }
-
+//유저 정보수정 요청
 export function requestModifyUserInfo(newData, userId) {
-  // axios.defaults.withCredentials = true;
   const token = JSON.parse(localStorage.getItem("loginInfo")!).accessToken;
-  // axios.defaults.withCredentials = true;
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  console.log(newData, "!!!!!!!!!!!!!!!!!", userId, " 유저 아이디");
   const result = axios
     .patch(`${SERVER_URL}/patch-userInfo/${userId}`, newData)
     .then((res) => {
-      console.log(res.data, "수정된 회원정보");
       if (res.status === 200) {
         return res.data;
       } else {
@@ -212,7 +183,6 @@ export function requestModifyUserInfo(newData, userId) {
     })
     .catch((err) => {
       return false;
-      console.log(err);
     });
   return result;
 }
