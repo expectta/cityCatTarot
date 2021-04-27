@@ -1,70 +1,83 @@
-# Getting Started with Create React App
+# 시티타로 캣
+배포 링크 : http://citycattarot.ga/
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- 오늘의 타로와 연애타로 점을 볼수 있고 로그인을 통해 내가 봤던 카드를 보관하여 다시 볼 수있는 플랫폼.
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### position
 
-### `npm test`
+**Front End : 김지운**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+|이름|담당|설명|
+|:---:|:---:|:---:|
+|김지운|Front End |유저 회원가입, 로그인 , 회원정보 변경, 타로점 채팅창, 보관함|
 
-### `npm run build`
+<br/>
+<br/>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Back End : 이소연**
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+|이름|담당|설명|
+|:---:|:---:|:---:|
+|이소연|Back End|자바 스프링 서버, 서버배포|
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## 시스템 아키텍쳐
+[시스템 아키텍쳐](https://www.figma.com/file/nCiqEww5eb2fL19BPb7Z2w/Untitled?node-id=0%3A1)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+![image](https://user-images.githubusercontent.com/58800945/115952444-e685d880-a520-11eb-916e-edff7461b574.png)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### 메인화면
+![화면 기록 2021-04-24 오후 5 20 24](https://user-images.githubusercontent.com/58800945/115953451-97db3d00-a526-11eb-8694-5a7cfec2663f.gif)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 채팅화면
+- 오늘의 타로, 썸 타로 버튼별 22장씩 카드가 있음
+- 채팅이 시작되면 시티 캣(봇)의 인삿말을 시작으로 대화 형식의 타로 점을 본다.
+- 봇의 채팅글은 문장단위로 끊어져 1초 딜레이 후 생성된다.
+- 유저에게 카드를 볼것인지 의사를 묻는다.
+![화면 기록 2021-04-24 오후 6 15 52](https://user-images.githubusercontent.com/58800945/115953981-6748d280-a529-11eb-9509-abb03ecb34d1.gif)
 
-## Learn More
+### 보관함
+- 오늘 본 카드는 제목을 삽입하여 저장
+- 보관함에서 카드의 내용 확인
+- 보관함 카드 삭제
+![화면 기록 2021-04-24 오후 6 26 42](https://user-images.githubusercontent.com/58800945/115954243-da9f1400-a52a-11eb-99ba-003a2a7dd0bb.gif)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+### 회원가입/로그인/사용자 정보변경
+ - 회원가입 시 email 형식 유효성 검사
+ - 비밀번호 문자 + 숫자 + 특수기호 유효성검사
+ - 로그인 후 사용자 정보변경
+ - 
+  ![화면 기록 2021-04-24 오후 6 32 54](https://user-images.githubusercontent.com/58800945/115954445-0d95d780-a52c-11eb-9f99-115f6c8c2d1d.gif)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+## 기술 스택
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Front End
 
-### Advanced Configuration
+- Library
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+|이름|내용|
+|:---:|:---:|
+|리액트 | 컴포넌트기반으로 재사용성이 용이, 컴포넌트별 상태관리가 용이  |
+|axios | 서버 비동기 통신 |
+|styled_componets | javascript 파일 내에서 CSS를 사용하여 별도의 CSS 파일 생성 불필요, 스타일컴포넌트에 props를 전달수있다|
+|react-scroll-to-bottom|채팅 화면에서 '봇'의 채팅글이 랜더링 될 때 스크롤을 항상 최 하단으로 유지하기 위함|
+|typescript | 정적 타입을 지원하므로 컴파일 단계에서 오류를 포착할 수 있는 장점이 있다. | 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+<br/>
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
