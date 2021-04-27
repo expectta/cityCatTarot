@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { Link, useHistory } from "react-router-dom";
 import { BsJustify } from "react-icons/bs";
@@ -17,13 +16,12 @@ export interface Igreeting {
 }
 export default function Main({
   loginInfo,
-  openModal,
   handleLogOut,
   setGreeting,
   greeting,
 }: Iprops) {
   const history = useHistory();
-
+  //type 별 카드 종류 업데이트
   const handleChangeChatType = (number: number): void => {
     setGreeting({ ...greeting, checkedChat: number });
   };
@@ -175,9 +173,6 @@ const SideMenu = styled.span`
     margin-left: 150px;
   }
   animation-fill-mode: forwards;
-`;
-const Title = styled.div`
-  background: red;
 `;
 const Container = styled.div`
   width: 100%;
