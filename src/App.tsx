@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import styled, { createGlobalStyle, ThemeProvider } from "styled-components";
 import theme from "./assets/theme";
@@ -30,10 +30,12 @@ export interface ImyTarotResult {
 }
 export default function App() {
   const history = createMemoryHistory();
+  //login 유저 정보
   const [loginInfo, setLoginInfo] = useState<IloginInfo>({
     userId: 0,
     isLogin: false,
   });
+  //유저가 선택한 카드 정보
   const [myTarotResult, setMyTarotResult] = useState<ImyTarotResult>({
     cardId: "",
     title: "",
@@ -41,7 +43,7 @@ export default function App() {
     cardDetail: "",
     userInputSubject: "",
   });
-
+  //채팅창 실행시 봇 인삿말
   const [greeting, setGreeting] = useState<Igreeting>({
     checkedChat: 0,
     greetingScript: [
@@ -72,14 +74,12 @@ export default function App() {
     setModalMessage(message);
     setModalVisible(true);
   };
-
   //로그아웃
   const handleLogOut = () => {
     setLoginInfo({
       userId: 0,
       isLogin: false,
     });
-
     alert("로그아웃 되었습니다");
   };
   //로그인
@@ -91,7 +91,8 @@ export default function App() {
       });
     }
   };
-
+  //main화면 로그인시 유저 정보가 localstorage에 저장되어 있으면
+  //로그인상태로 전환
   useEffect(() => {
     if (localStorage.getItem("loginInfo")) {
       setLoginInfo({
@@ -174,7 +175,6 @@ export default function App() {
     </Router>
   );
 }
-
 const GoLogin = styled(Link)`
   background: #6f6eff;
   width: 50%;
@@ -190,7 +190,6 @@ const GoLogin = styled(Link)`
   text-decoration: none;
 `;
 const GlobalStyle = createGlobalStyle`
-
 * {
 	box-sizing: border-box;
 	scroll-behavior: smooth;
@@ -206,7 +205,5 @@ body{
 	background:black;
 	border: 1px solid #cf5fbf;
   box-shadow: 0px 0px 11px 2px #6727d7fc
-
 }
-
 `;
