@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import styled from "styled-components";
 import { IloginInfo } from "../App";
@@ -19,6 +19,7 @@ export default function Main({ loginInfo }: props) {
     validPassword: false,
     validMobile: false,
   });
+  //로그인한 유저 정보
   const [userInfo, setUserInfo] = useState({
     isModify: false,
     userId: 0,
@@ -27,6 +28,7 @@ export default function Main({ loginInfo }: props) {
     passwordModify: "",
     nickNameModify: "",
   });
+  //회원정보 수정관련 user 입력정보
   const [inputValue, setInpuValue] = useState({
     password: "",
     checkPasswrod: "",
@@ -37,19 +39,12 @@ export default function Main({ loginInfo }: props) {
     messageVisible: false,
     passwrodValidation: false,
   });
+  //로그인 한 유저 정보 요청
   const hadleGetUserInfo = async () => {
-    console.log(loginInfo.userId, " 현재 유저아이디");
     const result = await requestUserInfo(
       JSON.parse(localStorage.getItem("loginInfo")!).userId
     );
-    console.log(
-      JSON.parse(localStorage.getItem("loginInfo")!).userId,
-      " 로컬데이터!!!!!!!!!!!!!!!!!!!!!!!",
-      result.id,
-      " =====결과 id"
-    );
     if (result.id === JSON.parse(localStorage.getItem("loginInfo")!).userId) {
-      console.log(result, " 회원정보 수정 후 업데이트");
       setUserInfo({
         ...userInfo,
         userId: result.userId,
@@ -58,6 +53,7 @@ export default function Main({ loginInfo }: props) {
       });
     }
   };
+  //회원정보 변경사항 update 요청
   const haldeRequestModifyUserInfo = async (newData) => {
     if (Object.keys(newData).includes("password") && !isValidPassword) {
       alert("비밀번호를 확인 해 주세요");
@@ -83,6 +79,7 @@ export default function Main({ loginInfo }: props) {
     }
     setMessage("");
   };
+  //패스워드 일치여부 확인
   const handleLastPassword = (event) => {
     const { value } = event.target;
     setLastPassword(value);
@@ -95,22 +92,6 @@ export default function Main({ loginInfo }: props) {
       setMessage("비밀번호 일치");
       setIsValidPassword(true);
     }
-  };
-  const handleCheckPassword = (event) => {
-    const { value } = event.target;
-    if (strongPassword(value)) {
-      setInpuValue({
-        ...inputValue,
-        message: "",
-        messageVisible: false,
-      });
-      return;
-    }
-    setInpuValue({
-      ...inputValue,
-      message: "비밀번호 형식에 맞지 않습니다",
-      messageVisible: true,
-    });
   };
   const handleFirstPassword = (event) => {
     const { value } = event.target;
@@ -132,22 +113,11 @@ export default function Main({ loginInfo }: props) {
       }
     }
   };
-
-  const hadleFixUserInfo = () => {};
-  const handleChangeUserinfo = () => {
-    setUserInfo({
-      ...userInfo,
-      isModify: !userInfo.isModify,
-    });
-  };
+  //페이지 로딩시 최초 유저 정보 get요청
   useEffect(() => {
     hadleGetUserInfo();
   }, []);
-  useEffect(() => {
-    console.log(inputValue.nickName, " 닉네임");
-    console.log(lastPassword, "두번째 비번");
-    console.log(validation, "유효성검사");
-  }, [firstPassword, lastPassword, validation.validPassword, inputValue]);
+
   return (
     <>
       <Container>
