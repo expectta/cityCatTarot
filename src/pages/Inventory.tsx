@@ -10,26 +10,26 @@ interface Iprops {
   setMyTarotResult(ImyTarotResult): void;
 }
 export default function Inventory({ setMyTarotResult }: Iprops) {
-  const [cardList, setCardList] = useState<any[]>([]);
-  const [deletCard, setDeleteCard] = useState<number>(0);
   const history = useHistory();
-
+  //보관함 카드 리스트
+  const [cardList, setCardList] = useState<any[]>([]);
+  // 현재 선택된 카드
+  const [deletCard, setDeleteCard] = useState<number>(0);
+  //로그인한 유저의 카드 보관함리스트 요청
   const handleInitialCardList = async () => {
     const result = await requestMyCardList(
       JSON.parse(localStorage.getItem("loginInfo")!).userId
     );
-    console.log(result, " 카드리스트");
     if (result.length > 0) {
-      console.log(result, " 결과값");
       setCardList(cardList.concat(...result));
       return;
     }
     setCardList([]);
   };
+  //보관함 카드 삭제 핸들러
   const hadleDeleteCard = async () => {
     if (deletCard !== 0) {
       const result = await requestMyCardDelete(deletCard);
-      console.log(result, " 삭제 결과값은/???");
       if (result) {
         handleInitialCardList();
       }
@@ -37,13 +37,11 @@ export default function Inventory({ setMyTarotResult }: Iprops) {
       alert("카드를 선택해주세요");
     }
   };
+  //보관함 페이지 접속시 최초 유저의 보관함 cardlist목록 요청
   useEffect(() => {
     handleInitialCardList();
     return () => {};
   }, []);
-  useEffect(() => {
-    console.log(cardList, "업데이트 된  카드리스트");
-  }, [cardList]);
   return (
     <>
       <Wrapper>
