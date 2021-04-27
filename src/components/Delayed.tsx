@@ -11,10 +11,10 @@ interface Props {
   image: string;
   type: string;
   setChatData: any;
-  handleVisiableButton: any;
-  handleNextStep: any;
-  category: any;
-  handlePostCard: any;
+  handleVisiableButton: () => void;
+  handleNextStep: () => void;
+  category: string | null;
+  handlePostCard: () => void;
 }
 const Delayed = ({
   image,
